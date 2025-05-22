@@ -1,19 +1,7 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const Task = require('../models/Task');
+const auth = require('../middleware/auth');
 const router = express.Router();
-
-// Auth middleware
-const auth = (req, res, next) => {
-  try {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    res.status(401).json({ error: 'Please authenticate' });
-  }
-};
 
 // Get all tasks for user
 router.get('/', auth, async (req, res) => {
